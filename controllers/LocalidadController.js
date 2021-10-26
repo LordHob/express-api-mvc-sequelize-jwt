@@ -1,175 +1,178 @@
 //Importo modelo de datos
 const db = require("../models");
-const movies = db.movie;
+const localidades = db.localidad;
 const Op = db.Sequelize.Op; //Import all ORM sequelize functions 
 
-var categoryModel  = require('../models').category;  //Add for dependency response
+var provinciaModel = require('../models').provincia;  //Add for dependency response
 
-const MovieController = {}; //Create the object controller
+const LocalidadController = {}; //Create the object controller
 
 
 
 //CRUD end-points Functions
 //-------------------------------------------------------------------------------------
-//GET all movies from database
-MovieController.getAll = (req, res) => {
-    
-    movies.findAll({include: [{ model:categoryModel}]})
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving movies."
-        });
-      });
-  };
+//GET all localidades from database
+LocalidadController.getAll = (req, res) => {
 
-
-//-------------------------------------------------------------------------------------
-//GET movies by Id from database
-MovieController.getById = (req, res) => {
-    const id = req.params.id;
-
-    movies.findByPk(id, {include: [{ model:categoryModel}]})
-      .then(data => {
-        if (data) {
-          res.send(data);
-        } else {
-          res.status(404).send({
-            message: `Cannot find Tutorial with id=${id}.`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving movies with id=" + id
-        });
-      });
-  };
-
-
-
-//-------------------------------------------------------------------------------------
-//CREATE a new movie in database
-MovieController.create = (req, res) => {
-    // Validate request
-    if (!req.body.title) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
-  
-    // Create a Movies
-    const newMovie = {
-      title: req.body.title,
-      categoryId: req.body.categoryId
-    };
-  
-    // Save Movies in the database
-    movies.create(newMovie)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Movie."
-        });
-      });
-  };
-
-
-//-------------------------------------------------------------------------------------
-//UPDATE a movie from database
-MovieController.update = (req, res) => {
-    const id = req.params.id;
-  
-    movies.update(req.body, {
-      where: { id: id }
+  localidades.findAll({ include: [{ model: provinciaModel }] })
+    .then(data => {
+      res.send(data);
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Movie was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Movie with id=${id}. Maybe Movie was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Movie with id=" + id
-        });
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving localidades."
       });
-  };
+    });
+};
 
 
 //-------------------------------------------------------------------------------------
-//GET movie by Title from database 
-//FindByTitle
-  MovieController.getByTitle = (req, res) => {
-    movies.findAll({ where: { title: req.params.title } })
-      .then(data => {
+//GET localidades by Id from database
+LocalidadController.getById = (req, res) => {
+  const id = req.params.id;
+
+  localidades.findByPk(id, { include: [{ model: provinciaModel }] })
+    .then(data => {
+      if (data) {
         res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving tutorials."
+      } else {
+        res.status(404).send({
+          message: `Cannot find Tutorial with id=${id}.`
         });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving localidades with id=" + id
       });
-  };
+    });
+};
+
 
 
 //-------------------------------------------------------------------------------------
-//DELETE a movie by Id from database
-MovieController.delete = (req, res) => {
-    const id = req.params.id;
-  
-    movies.destroy({
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Movie was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete Movie with id=${id}. Maybe Movie was not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete Movie with id=" + id
-        });
-      });
+//CREATE a new localidad in database
+LocalidadController.create = (req, res) => {
+  // Validate request
+  if (!req.body.nombre) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
+  // Create a localidades
+  const newLocalidad = {
+    nombre: req.body.nombre,
+    poblacion: req.body.poblacion,
+    capital_pro: req.body.capital_pro,
+    capital_ca: req.body.capital_ca,
+    provinciaId: req.body.provinciaId
   };
+
+  // Save localidades in the database
+  localidades.create(newLocalidad)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the localidad."
+      });
+    });
+};
 
 
 //-------------------------------------------------------------------------------------
-//DELETE all movies from database
-//delete all movies 
-  MovieController.deleteAll = (req, res) => {
-    movies.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} Movies were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all movies."
-        });
-      });
-  };
+//UPDATE a localidad from database
+LocalidadController.update = (req, res) => {
+  const id = req.params.id;
 
-module.exports = MovieController;
+  localidades.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "localidad was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update localidad with id=${id}. Maybe localidad was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating localidad with id=" + id
+      });
+    });
+};
+
+
+//-------------------------------------------------------------------------------------
+//GET localidad by Name from database 
+//FindByName
+LocalidadController.getByName = (req, res) => {
+  localidades.findAll({ where: { nombre: req.params.nombre } })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+};
+
+
+//-------------------------------------------------------------------------------------
+//DELETE a localidad by Id from database
+LocalidadController.delete = (req, res) => {
+  const id = req.params.id;
+
+  localidades.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "localidad was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete localidad with id=${id}. Maybe localidad was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete localidad with id=" + id
+      });
+    });
+};
+
+
+//-------------------------------------------------------------------------------------
+//DELETE all localidades from database
+//delete all localidades 
+LocalidadController.deleteAll = (req, res) => {
+  localidades.destroy({
+    where: {},
+    truncate: false
+  })
+    .then(nums => {
+      res.send({ message: `${nums} localidades were deleted successfully!` });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while removing all localidades."
+      });
+    });
+};
+
+module.exports = LocalidadController;

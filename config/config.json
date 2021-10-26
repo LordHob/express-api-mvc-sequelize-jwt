@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "root",
-    "database": "database_development",
-    "host": "127.0.0.1",
+    "username": "remote",
+    "password": "f3d0r421.",
+    "database": "geografiaDB",
+    "host": "192.168.0.19",
     "port": "3306",
     "dialect": "mysql"
   },
@@ -15,10 +15,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "root",
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "remote",
+    "password": "f3d0r421.",
+    "database": "geografiaDB",
+    "host": "192.168.0.19",
+    "port": "3306",
     "dialect": "mysql"
   }
 }
