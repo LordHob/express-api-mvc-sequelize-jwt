@@ -1,38 +1,38 @@
 //Importo modelo de datos
 const db = require("../models");
-const movies = db.movie;
+const provincias = db.provincia;
 const Op = db.Sequelize.Op; //Import all ORM sequelize functions 
 
-var categoryModel  = require('../models').category;  //Add for dependency response
+var caModel  = require('../models').ca;  //Add for dependency response
 
-const MovieController = {}; //Create the object controller
+const ProvinciaModel = {}; //Create the object controller
 
 
 
 //CRUD end-points Functions
 //-------------------------------------------------------------------------------------
-//GET all movies from database
-MovieController.getAll = (req, res) => {
+//GET all provincias from database
+ProvinciaModel.getAll = (req, res) => {
     
-    movies.findAll({include: [{ model:categoryModel}]})
+    provincias.findAll({include: [{ model:caModel}]})
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving movies."
+            err.message || "Some error occurred while retrieving provincias."
         });
       });
   };
 
 
 //-------------------------------------------------------------------------------------
-//GET movies by Id from database
-MovieController.getById = (req, res) => {
+//GET provincias by Id from database
+ProvinciaModel.getById = (req, res) => {
     const id = req.params.id;
 
-    movies.findByPk(id, {include: [{ model:categoryModel}]})
+    provincias.findByPk(id, {include: [{ model:caModel}]})
       .then(data => {
         if (data) {
           res.send(data);
@@ -44,7 +44,7 @@ MovieController.getById = (req, res) => {
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving movies with id=" + id
+          message: "Error retrieving provincias with id=" + id
         });
       });
   };
@@ -52,68 +52,71 @@ MovieController.getById = (req, res) => {
 
 
 //-------------------------------------------------------------------------------------
-//CREATE a new movie in database
-MovieController.create = (req, res) => {
+//CREATE a new provincia in database
+ProvinciaModel.create = (req, res) => {
     // Validate request
-    if (!req.body.title) {
+    if (!req.body.nombre) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
       return;
     }
   
-    // Create a Movies
-    const newMovie = {
-      title: req.body.title,
-      categoryId: req.body.categoryId
+    // Create a provincias
+    const newprovincia = {
+      cp: req.body.cp,
+      nombre: req.body.nombre,
+      poblacion: req.body.poblacion,
+      superficie: req.body.superficie,
+      caId: req.body.caId
     };
   
-    // Save Movies in the database
-    movies.create(newMovie)
+    // Save provincias in the database
+    provincias.create(newprovincia)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while creating the Movie."
+            err.message || "Some error occurred while creating the provincia."
         });
       });
   };
 
 
 //-------------------------------------------------------------------------------------
-//UPDATE a movie from database
-MovieController.update = (req, res) => {
+//UPDATE a provincia from database
+ProvinciaModel.update = (req, res) => {
     const id = req.params.id;
   
-    movies.update(req.body, {
+    provincias.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Movie was updated successfully."
+            message: "provincia was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Movie with id=${id}. Maybe Movie was not found or req.body is empty!`
+            message: `Cannot update provincia with id=${id}. Maybe provincia was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Movie with id=" + id
+          message: "Error updating provincia with id=" + id
         });
       });
   };
 
 
 //-------------------------------------------------------------------------------------
-//GET movie by Title from database 
-//FindByTitle
-  MovieController.getByTitle = (req, res) => {
-    movies.findAll({ where: { title: req.params.title } })
+//GET provincia by nombre from database 
+//FindBynombre
+  ProvinciaModel.getByNombre = (req, res) => {
+    provincias.findAll({ where: { nombre: req.params.nombre } })
       .then(data => {
         res.send(data);
       })
@@ -127,49 +130,49 @@ MovieController.update = (req, res) => {
 
 
 //-------------------------------------------------------------------------------------
-//DELETE a movie by Id from database
-MovieController.delete = (req, res) => {
+//DELETE a provincia by Id from database
+ProvinciaModel.delete = (req, res) => {
     const id = req.params.id;
   
-    movies.destroy({
+    provincias.destroy({
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Movie was deleted successfully!"
+            message: "provincia was deleted successfully!"
           });
         } else {
           res.send({
-            message: `Cannot delete Movie with id=${id}. Maybe Movie was not found!`
+            message: `Cannot delete provincia with id=${id}. Maybe provincia was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Movie with id=" + id
+          message: "Could not delete provincia with id=" + id
         });
       });
   };
 
 
 //-------------------------------------------------------------------------------------
-//DELETE all movies from database
-//delete all movies 
-  MovieController.deleteAll = (req, res) => {
-    movies.destroy({
+//DELETE all provincias from database
+//delete all provincias 
+  ProvinciaModel.deleteAll = (req, res) => {
+    provincias.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Movies were deleted successfully!` });
+        res.send({ message: `${nums} provincias were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all movies."
+            err.message || "Some error occurred while removing all provincias."
         });
       });
   };
 
-module.exports = MovieController;
+module.exports = ProvinciaModel;
