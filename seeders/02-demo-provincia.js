@@ -3,72 +3,92 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     
-      await queryInterface.bulkInsert('movies', [{
-        title : "Train to Busan",
-        categoryId : 1,
+      await queryInterface.bulkInsert('provincias',  [{
+        nombre: "Derek",
+        cp: "61124",
+        poblacion: 205,
+        superficie: 3839,
+        caId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "Shaun of the dead",
-        categoryId : 1,
+      }, {
+        nombre: "Mandie",
+        cp: "61424",
+        poblacion: 244,
+        superficie: 9399,
+        caId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "ZombieLand",
-        categoryId : 1,
+      }, {
+        nombre: "Claudell",
+        cp: "61934",
+        poblacion: 234,
+        superficie: 8129,
+        caId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "Evil Dead",
-        categoryId : 2,
+      }, {
+        nombre: "Fabiano",
+        cp: "0645",
+        poblacion: 425,
+        superficie: 3569,
+        caId: 8,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "Evil Dead 2",
-        categoryId : 2,
+      }, {
+        nombre: "Jayme",
+        cp: "61150",
+        poblacion: 728,
+        superficie: 6266,
+        caId: 10,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "Evil Dead 3",
-        categoryId : 2,
+      }, {
+        nombre: "Gladys",
+        cp: "29560",
+        poblacion: 332,
+        superficie: 4159,
+        caId: 7,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "28 Days Later",
-        categoryId : 2,
+      }, {
+        nombre: "Magdalena",
+        cp: "61351",
+        poblacion: 701,
+        superficie: 7876,
+        caId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "Zombiever",
-        categoryId : 1,
+      }, {
+        nombre: "Emmery",
+        cp: "61424",
+        poblacion: 415,
+        superficie: 7155,
+        caId: 5,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "Overlord",
-        categoryId : 2,
+      }, {
+        nombre: "Gaby",
+        cp: "613424",
+        poblacion: 682,
+        superficie: 1970,
+        caId: 6,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        title : "Black Sheep",
-        categoryId : 1,
+      }, {
+        nombre: "Cornie",
+        cp: "2213",
+        poblacion: 221,
+        superficie: 2545,
+        caId: 9,
         createdAt: new Date(),
         updatedAt: new Date()
-      }
-    ], {});
+      }], {});
   },
 
   down: async (queryInterface, Sequelize) => {
     
-      await queryInterface.bulkDelete('movies', null, {});
+      await queryInterface.bulkDelete('provincias', null, {});
      
   }
 };
