@@ -1,8 +1,8 @@
 'use strict';
-const {Model} = require('sequelize');
-const category = require('./category');
+const { Model } = require('sequelize');
+const provincia = require('./provincia');
 module.exports = (sequelize, DataTypes) => {
-  class movie extends Model {
+  class localidad extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -10,17 +10,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      movie.belongsTo(models.category, {
-        foreignKey: 'categoryId'
+      localidad.belongsTo(models.provincia, {
+        foreignKey: 'provinciaId'
       });
     }
   };
-  movie.init({
-    title: DataTypes.STRING,
-    categoryId: DataTypes.INTEGER
+  localidad.init({
+    nombre: DataTypes.STRING,
+    poblacion: DataTypes.STRING,
+    cp: DataTypes.INTEGER,
+    capital_pro: DataTypes.BOOLEAN,
+    capital_ca: DataTypes.BOOLEAN,
+    provinciaId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'movie',
+    modelName: 'localidad',
   });
-  return movie;
+  return localidad;
 };
