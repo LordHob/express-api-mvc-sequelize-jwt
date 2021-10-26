@@ -1,19 +1,19 @@
 //Importo modelo de datos
 const db = require("../models");
-const category = db.category;
+const ca = db.ca;
 const Op = db.Sequelize.Op; //Import all ORM sequelize functions 
 
-const CategoryController = {}; //Create the object controller
+const CaController = {}; //Create the object controller
 
 
 //CRUD end-points Functions
 //-------------------------------------------------------------------------------------
 //GET all categories from database
-CategoryController.getAll = (req, res) => {
+CaController.getAll = (req, res) => {
     const type = req.query.type;
     var condition = type ? { type: { [Op.like]: `%${type}%` } } : null;
   
-    category.findAll({ where: condition })
+    ca.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
@@ -28,10 +28,10 @@ CategoryController.getAll = (req, res) => {
 
 //-------------------------------------------------------------------------------------
 //GET categories by Id from database
-CategoryController.getById = (req, res) => {
+CaController.getById = (req, res) => {
     const id = req.params.id;
   
-    category.findByPk(id)
+    ca.findByPk(id)
       .then(data => {
         if (data) {
           res.send(data);
@@ -51,7 +51,7 @@ CategoryController.getById = (req, res) => {
 
 //-------------------------------------------------------------------------------------
 //CREATE a new category in database
-CategoryController.create = (req, res) => {
+CaController.create = (req, res) => {
     // Validate request
     if (!req.body.type) {
       res.status(400).send({
@@ -61,13 +61,14 @@ CategoryController.create = (req, res) => {
     }
   
     // Create a Category
-    const newCategory = {
-      type: req.body.type,
-      age: req.body.age
+    const newCa = {
+      nombre: req.body.nombre,
+      poblacion: req.body.poblacion,
+      superficie: req.body.superficie,
     };
   
     // Save Category in the database
-    category.create(newCategory)
+    ca.create(newCa)
       .then(data => {
         res.send(data);
       })
@@ -82,10 +83,10 @@ CategoryController.create = (req, res) => {
 
 //-------------------------------------------------------------------------------------
 //UPDATE a category from database
-CategoryController.update = (req, res) => {
+CaController.update = (req, res) => {
     const id = req.params.id;
   
-    category.update(req.body, {
+    ca.update(req.body, {
       where: { id: id }
     })
       .then(num => {
@@ -110,8 +111,8 @@ CategoryController.update = (req, res) => {
 //-------------------------------------------------------------------------------------
 //GET categories by Type from database  
 //FindByType
-CategoryController.getByType = (req, res) => {
-    category.findAll({ where: { type: req.params.type } })
+CaController.getByNombre = (req, res) => {
+    ca.findAll({ where: { nombre: req.params.nombre } })
       .then(data => {
         res.send(data);
       })
@@ -126,10 +127,10 @@ CategoryController.getByType = (req, res) => {
 
 //-------------------------------------------------------------------------------------
 //DELETE a category by Id from database
-CategoryController.delete = (req, res) => {
+CaController.delete = (req, res) => {
     const id = req.params.id;
   
-    category.destroy({
+    ca.destroy({
       where: { id: id }
     })
       .then(num => {
@@ -154,8 +155,8 @@ CategoryController.delete = (req, res) => {
 //-------------------------------------------------------------------------------------
 //DELETE all categories from database
 //delete all categories   
-CategoryController.deleteAll = (req, res) => {
-    category.destroy({
+CaController.deleteAll = (req, res) => {
+    ca.destroy({
       where: {},
       truncate: false
     })
@@ -170,4 +171,4 @@ CategoryController.deleteAll = (req, res) => {
       });
   };
 
-module.exports = CategoryController;
+module.exports = CaController;
