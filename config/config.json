@@ -4,7 +4,7 @@
     "password": "f3d0r421.",
     "database": "geografiaDB",
     "host": "192.168.0.19",
-    "port": "3306",
+    "port": 3306,
     "dialect": "mysql"
   },
   "test": {
@@ -15,11 +15,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "remote",
-    "password": "f3d0r421.",
-    "database": "geografiaDB",
+    "username": "root",
+    "password": "root",
+    "database": "database_production",
     "host": "192.168.0.19",
-    "port": "3306",
     "dialect": "mysql"
   }
 }
