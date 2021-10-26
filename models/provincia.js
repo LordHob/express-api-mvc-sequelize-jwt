@@ -1,6 +1,6 @@
 'use strict';
-const {Model} = require('sequelize');
-
+const { Model } = require('sequelize');
+const ca = require('./ca');
 module.exports = (sequelize, DataTypes) => {
   class provincia extends Model {
     /**
@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
     //  */
     static associate(models) {
-      this.hasMany(models.localidad, {
-        foreignKey: 'localidadId'
+      provincia.hasMany(models.localidad, {
+        foreignKey: 'id'
       });
-      this.belongsTo(models.ca, {
-        foreignKey: 'caId'
+      provincia.belongsTo(models.ca, {
+        foreignKey: 'id'
       });
     }
   };

@@ -13,7 +13,6 @@ const LocalidadController = {}; //Create the object controller
 //-------------------------------------------------------------------------------------
 //GET all localidades from database
 LocalidadController.getAll = (req, res) => {
-
   localidades.findAll({ include: [{ model: provinciaModel }] })
     .then(data => {
       res.send(data);
@@ -31,7 +30,6 @@ LocalidadController.getAll = (req, res) => {
 //GET localidades by Id from database
 LocalidadController.getById = (req, res) => {
   const id = req.params.id;
-
   localidades.findByPk(id, { include: [{ model: provinciaModel }] })
     .then(data => {
       if (data) {
