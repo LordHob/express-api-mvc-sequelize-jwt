@@ -1,57 +1,59 @@
 //Importo modelo de datos
 const db = require("../models");
-const ca = db.ca;
+const provinces = db.province;
 const Op = db.Sequelize.Op; //Import all ORM sequelize functions 
 
-const CaController = {}; //Create the object controller
+var caModel = require('../models').ca;  //Add for dependency response
+
+const ProvinceController = {}; //Create the object controller
+
 
 
 //CRUD end-points Functions
 //-------------------------------------------------------------------------------------
-//GET all ca from database
-CaController.getAll = (req, res) => {
-  const nombre = req.query.nombre;
-  var condition = nombre ? { nombre: { [Op.like]: `%${nombre}%` } } : null;
+//GET all provinces from database
+ProvinceController.getAll = (req, res) => {
 
-  ca.findAll({ where: condition })
+  provinces.findAll({ include: [{ model: caModel }] })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving ca."
+          err.message || "Some error occurred while retrieving provinces."
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//GET ca by Id from database
-CaController.getById = (req, res) => {
+//GET provinces by Id from database
+ProvinceController.getById = (req, res) => {
   const id = req.params.id;
 
-  ca.findByPk(id)
+  provinces.findByPk(id, { include: [{ model: caModel }] })
     .then(data => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Category with id=${id}.`
+          message: `Cannot find Tutorial with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving ca with id=" + id
+        message: "Error retrieving provinces with id=" + id
       });
     });
 };
 
 
+
 //-------------------------------------------------------------------------------------
-//CREATE a new category in database
-CaController.create = (req, res) => {
+//CREATE a new Province in database
+ProvinceController.create = (req, res) => {
   // Validate request
   if (!req.body.nombre) {
     res.status(400).send({
@@ -60,115 +62,117 @@ CaController.create = (req, res) => {
     return;
   }
 
-  // Create a Category
-  const newCa = {
+  // Create a province
+  const newProvince = {
     nombre: req.body.nombre,
+    cp: req.body.cp,
     poblacion: req.body.poblacion,
-    superficie: req.body.superficie
+    superficie: req.body.superficie,
+    caId: req.body.caId
   };
 
-  // Save Category in the database
-  ca.create(newCa)
+  // Save provinces in the database
+  provinces.create(newProvince)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the newCa."
+          err.message || "Some error occurred while creating the Province."
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//UPDATE a category from database
-CaController.update = (req, res) => {
+//UPDATE a Province from database
+ProvinceController.update = (req, res) => {
   const id = req.params.id;
 
-  ca.update(req.body, {
+  provinces.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Category was updated successfully."
+          message: "Province was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Category with id=${id}. Maybe ca was not found or req.body is empty!`
+          message: `Cannot update Province with id=${id}. Maybe Province was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Category with id=" + id
+        message: "Error updating Province with id=" + id
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//GET ca by Type from database  
-//FindByType
-CaController.getByName = (req, res) => {
-  ca.findAll({ where: { nombre: req.params.nombre } })
+//GET Province by nombre from database 
+//FindByNombre
+ProvinceController.getByName = (req, res) => {
+  provinces.findAll({ where: { nombre: req.params.nombre } })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving ca."
+          err.message || "Some error occurred while retrieving provinces."
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//DELETE a category by Id from database
-CaController.delete = (req, res) => {
+//DELETE a Province by Id from database
+ProvinceController.delete = (req, res) => {
   const id = req.params.id;
 
-  ca.destroy({
+  provinces.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Category was deleted successfully!"
+          message: "Province was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Category with id=${id}. Maybe ca was not found!`
+          message: `Cannot delete Province with id=${id}. Maybe Province was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Category with id=" + id
+        message: "Could not delete Province with id=" + id
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//DELETE all ca from database
-//delete all ca   
-CaController.deleteAll = (req, res) => {
-  ca.destroy({
+//DELETE all provinces from database
+//delete all provinces 
+ProvinceController.deleteAll = (req, res) => {
+  provinces.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} ca were deleted successfully!` });
+      res.send({ message: `${nums} provinces were deleted successfully!` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all ca."
+          err.message || "Some error occurred while removing all provinces."
       });
     });
 };
 
-module.exports = CaController;
+module.exports = ProvinceController;

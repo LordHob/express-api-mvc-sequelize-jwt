@@ -1,57 +1,59 @@
 //Importo modelo de datos
 const db = require("../models");
-const ca = db.ca;
+const cities = db.city;
 const Op = db.Sequelize.Op; //Import all ORM sequelize functions 
 
-const CaController = {}; //Create the object controller
+var provinceModel = require('../models').province;  //Add for dependency response
+
+const CityController = {}; //Create the object controller
+
 
 
 //CRUD end-points Functions
 //-------------------------------------------------------------------------------------
-//GET all ca from database
-CaController.getAll = (req, res) => {
-  const nombre = req.query.nombre;
-  var condition = nombre ? { nombre: { [Op.like]: `%${nombre}%` } } : null;
+//GET all cities from database
+CityController.getAll = (req, res) => {
 
-  ca.findAll({ where: condition })
+  cities.findAll({ include: [{ model: provinceModel }] })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving ca."
+          err.message || "Some error occurred while retrieving cities."
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//GET ca by Id from database
-CaController.getById = (req, res) => {
+//GET cities by Id from database
+CityController.getById = (req, res) => {
   const id = req.params.id;
 
-  ca.findByPk(id)
+  cities.findByPk(id, { include: [{ model: provinceModel }] })
     .then(data => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Category with id=${id}.`
+          message: `Cannot find Tutorial with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving ca with id=" + id
+        message: "Error retrieving cities with id=" + id
       });
     });
 };
 
 
+
 //-------------------------------------------------------------------------------------
-//CREATE a new category in database
-CaController.create = (req, res) => {
+//CREATE a new City in database
+CityController.create = (req, res) => {
   // Validate request
   if (!req.body.nombre) {
     res.status(400).send({
@@ -60,115 +62,118 @@ CaController.create = (req, res) => {
     return;
   }
 
-  // Create a Category
-  const newCa = {
+  // Create a cities
+  const newCity = {
     nombre: req.body.nombre,
     poblacion: req.body.poblacion,
-    superficie: req.body.superficie
+    cp: req.body.cp,
+    capital_pro: req.body.capital_pro,
+    capital_ca: req.body.capital_ca,
+    provinceId: req.body.provinceId
   };
 
-  // Save Category in the database
-  ca.create(newCa)
+  // Save cities in the database
+  cities.create(newCity)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the newCa."
+          err.message || "Some error occurred while creating the City."
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//UPDATE a category from database
-CaController.update = (req, res) => {
+//UPDATE a City from database
+CityController.update = (req, res) => {
   const id = req.params.id;
 
-  ca.update(req.body, {
+  cities.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Category was updated successfully."
+          message: "City was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Category with id=${id}. Maybe ca was not found or req.body is empty!`
+          message: `Cannot update City with id=${id}. Maybe City was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Category with id=" + id
+        message: "Error updating City with id=" + id
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//GET ca by Type from database  
-//FindByType
-CaController.getByName = (req, res) => {
-  ca.findAll({ where: { nombre: req.params.nombre } })
+//GET City by Title from database 
+//FindByTitle
+CityController.getByName = (req, res) => {
+  cities.findAll({ where: { nombre: req.params.nombre } })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving ca."
+          err.message || "Some error occurred while retrieving tutorials."
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//DELETE a category by Id from database
-CaController.delete = (req, res) => {
+//DELETE a City by Id from database
+CityController.delete = (req, res) => {
   const id = req.params.id;
 
-  ca.destroy({
+  cities.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Category was deleted successfully!"
+          message: "City was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Category with id=${id}. Maybe ca was not found!`
+          message: `Cannot delete City with id=${id}. Maybe City was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Category with id=" + id
+        message: "Could not delete City with id=" + id
       });
     });
 };
 
 
 //-------------------------------------------------------------------------------------
-//DELETE all ca from database
-//delete all ca   
-CaController.deleteAll = (req, res) => {
-  ca.destroy({
+//DELETE all cities from database
+//delete all cities 
+CityController.deleteAll = (req, res) => {
+  cities.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} ca were deleted successfully!` });
+      res.send({ message: `${nums} cities were deleted successfully!` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all ca."
+          err.message || "Some error occurred while removing all cities."
       });
     });
 };
 
-module.exports = CaController;
+module.exports = CityController;

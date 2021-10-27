@@ -2,67 +2,73 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-  
-      await queryInterface.bulkInsert('categories', [{
-        type: 'zombies',
-        age: 21,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'horror',
-        age: 16,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'action',
-        age: 21,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'drama',
-        age: 12,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'fantasy',
-        age: 8,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'mystery',
-        age: 12,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'romance',
-        age: 12,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'thriller',
-        age: 12,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        type: 'comedy',
-        age: 12,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    ], {});
+
+    await queryInterface.bulkInsert('cas', [{
+      nombre: "Texas",
+      poblacion: 76854,
+      superficie: 801707.32,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "New Jersey",
+      poblacion: 49791,
+      superficie: 521856.65,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "Montana",
+      poblacion: 18981,
+      superficie: 530659.99,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "Arkansas",
+      poblacion: 80795,
+      superficie: 935495.68,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "California",
+      poblacion: 62056,
+      superficie: 332251.8,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "California",
+      poblacion: 18242,
+      superficie: 225516.29,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "Nevada",
+      poblacion: 21494,
+      superficie: 455279.79,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "Florida",
+      poblacion: 41322,
+      superficie: 518681.65,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "Virginia",
+      poblacion: 81487,
+      superficie: 682342.0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      nombre: "District of Columbia",
+      poblacion: 13174,
+      superficie: 61482.99,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }], {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    
-      await queryInterface.bulkDelete('categories', null, {});
-     
+
+    await queryInterface.bulkDelete('cas', null, {});
+
   }
 };
